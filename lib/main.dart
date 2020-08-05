@@ -47,7 +47,7 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key) {
     print("constructing MyHomePage");
     String server = "irc.quakenet.org";
-    String channel = "#õlidnd";
+    String channel = "#õlimobile";
     String nick = "NikiMobile";
     String name = "NikiMobile";
 
@@ -64,9 +64,10 @@ class MyHomePage extends StatefulWidget {
 
     client.globalEventController.stream.listen((event) async {
 
-      print("Event fired!");
+      print("Event fired!" + event.eventName);
       if (event.eventName == "ready") {
         print("Ready, joining channel");
+
         client.joinChannel(event.config, channel);
       }
     });
