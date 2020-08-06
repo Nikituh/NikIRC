@@ -81,9 +81,11 @@ packages:
   firn:
     dependency: "direct main"
     description:
-      name: firn
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: c028941c88682cc061a7d3e440552d61d287082c
+      url: "git://github.com/Nikituh/firn.git"
+    source: git
     version: "0.0.2"
   flutter:
     dependency: "direct main"

@@ -12,6 +12,8 @@ import 'package:firn/events/ServerConnectEvent.dart';
 import 'package:firn/parser/IRCMessageParser.dart';
 import 'package:firn/parser/IRCPrefixParser.dart';
 
+import 'config/config.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -47,29 +49,32 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key) {
     print("constructing MyHomePage");
     String server = "irc.quakenet.org";
-    String channel = "#õlimobile";
+    String channel = "#õlidnd";
     String nick = "NikiMobile";
     String name = "NikiMobile";
 
     FirnClient client = new FirnClient();
-
+    client.printDebug = true;
     FirnConfig config = new FirnConfig();
 
     config.server = server;
     config.nickname = nick;
     config.realname = name;
     config.port = 6667;
-
     client.addConfig(config);
 
     client.globalEventController.stream.listen((event) async {
 
-      print("Event fired!" + event.eventName);
+      print("Event fired: " + event.eventName);
       if (event.eventName == "ready") {
-        print("Ready, joining channel");
+        client.authenticate(event.config, Config.IRC_USER, Config.IRC_PASSWORD);
 
+      }
+
+      if (event.eventName == "authenticated") {
         client.joinChannel(event.config, channel);
       }
+
     });
 
     client.connectToServer(config);

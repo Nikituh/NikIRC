@@ -23,7 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firn: "0.0.2"
+  firn:
+    git: "git://github.com/Nikituh/firn.git"
   dash_chat: "1.1.14"
   cupertino_icons: 0.1.3
 
