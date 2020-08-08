@@ -1,29 +1,21 @@
 
 import 'package:NikIRC/model/style.dart';
+import 'package:NikIRC/pages/chat.dart';
 import 'package:NikIRC/subviews/input-field.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
 
   LoginPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
-  @override
-  LoginPageState createState() => LoginPageState();
-}
-
-class LoginPageState extends State<LoginPage> {
+  BuildContext context;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: Center(
         child: Container(
           color: Colors.white,
@@ -41,7 +33,7 @@ class LoginPageState extends State<LoginPage> {
                 SizedBox(height: 20.0),
                 new InputField("Channel"),
                 SizedBox(height: 30.0),
-                createLoginButton(),
+                createLoginButton(context),
                 SizedBox(height: 15.0),
               ],
             ),
@@ -51,7 +43,8 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  createLoginButton() {
+  createLoginButton(BuildContext context) {
+    this.context = context;
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(5.0),
@@ -59,12 +52,20 @@ class LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: onConnectPress,
         child: Text("Connect",
             textAlign: TextAlign.center,
-            style: Style.text.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+            style: Style.text.copyWith(color: Colors.white, fontWeight: FontWeight.bold)
+        ),
       ),
     );
+  }
+
+  onConnectPress() {
+    Navigator.push(context, createRoute(context, ChatPage(title: "NikIRC")));
+  }
+
+  createRoute(BuildContext context, Widget widget) {
+    return MaterialPageRoute(builder: (context) => widget);
   }
 }
