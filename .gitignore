@@ -43,4 +43,4 @@ app.*.map.json
 .gradle
 .metadata
 
-lib/config/config.dart
+lib/model/config.dart
