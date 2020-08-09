@@ -1,4 +1,5 @@
 
+import 'package:NikIRC/model/irc-client.dart';
 import 'package:NikIRC/model/style.dart';
 import 'package:NikIRC/pages/chat.dart';
 import 'package:NikIRC/subviews/input-field.dart';
@@ -62,7 +63,7 @@ class LoginPage extends StatelessWidget {
   }
 
   onConnectPress() {
-    Navigator.push(context, createRoute(context, ChatPage(title: "NikIRC")));
+    Navigator.push(context, createRoute(context, ChatPage(title: IrcClient.instance.channel)));
   }
 
   createRoute(BuildContext context, Widget widget) {

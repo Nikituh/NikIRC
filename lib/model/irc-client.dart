@@ -10,11 +10,13 @@ class IrcClient {
   static IrcClient instance = new IrcClient();
 
   String server = "irc.quakenet.org";
-  String channel = "#õlidnd";
+  String channel = "#õlimobile";
   String nick = "NikiMobile";
   String name = "NikiMobile";
 
   List<ChatMessage> messages = new List();
+
+  Function messageReceived;
 
   IrcClient() {
 
@@ -39,14 +41,18 @@ class IrcClient {
         client.joinChannel(event.config, channel);
       }
 
+      if (event.eventName == "privMsgRecieved") {
+        messages.add(new ChatMessage(text: "2", user: new ChatUser(uid: "123451", name: "Niki")));
+        messageReceived();
+      }
     });
 
-//    client.connectToServer(config);
+    client.connectToServer(config);
 
     messages.add(new ChatMessage(text: "1", user: new ChatUser(uid: "123456", name: "Tiit")));
-    messages.add(new ChatMessage(text: "2", user: new ChatUser(uid: "123451", name: "Niki")));
-    messages.add(new ChatMessage(text: "3", user: new ChatUser(uid: "123452", name: "ffy")));
-    messages.add(new ChatMessage(text: "4", user: new ChatUser(uid: "123459", name: "Jass")));
+//    messages.add(new ChatMessage(text: "2", user: new ChatUser(uid: "123451", name: "Niki")));
+//    messages.add(new ChatMessage(text: "3", user: new ChatUser(uid: "123452", name: "ffy")));
+//    messages.add(new ChatMessage(text: "4", user: new ChatUser(uid: "123459", name: "Jass")));
 
   }
 
