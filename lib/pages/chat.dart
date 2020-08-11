@@ -20,15 +20,9 @@ class ChatPageState extends State<ChatPage> {
 
   ChatPageState() {
     messages = IrcClient.instance.messages;
-//    IrcClient.instance.messageReceived(
-//      this.setState(() {
-//        messages = IrcClient.instance.messages;
-//      })
-//      print("what")
-//    );
-//    VoidCallback asdf;
-//    asdf.call();
+    IrcClient.instance.chat = this;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +41,13 @@ class ChatPageState extends State<ChatPage> {
             )
         )
     );
+  }
+
+  void update(List<ChatMessage> messages) {
+    this.messages = messages;
+    setState(() {
+
+    });
   }
 
 }

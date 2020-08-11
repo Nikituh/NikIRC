@@ -1,7 +1,11 @@
 
+import 'package:NikIRC/pages/chat.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firn/FirnClient.dart';
 import 'package:firn/datatypes/FirnConfig.dart';
+import 'package:firn/datatypes/Message.dart';
+import 'package:firn/events/MessageRecievedEvent.dart';
+import 'package:flutter/material.dart';
 
 import 'config.dart';
 
@@ -16,7 +20,9 @@ class IrcClient {
 
   List<ChatMessage> messages = new List();
 
-  Function messageReceived;
+  // TODO circular dependency.
+  // How the fuck do delegates or callbacks work in dart!?
+  ChatPageState chat;
 
   IrcClient() {
 
@@ -42,19 +48,13 @@ class IrcClient {
       }
 
       if (event.eventName == "privMsgRecieved") {
-        messages.add(new ChatMessage(text: "2", user: new ChatUser(uid: "123451", name: "Niki")));
-        messageReceived();
+
+        Message message = (event as MessageRecievedEvent).message;
+        messages.add(new ChatMessage(text: message.parameters[1], user: new ChatUser(uid: "123451", name: "Niki")));
+        chat.update(messages);
       }
     });
 
     client.connectToServer(config);
-
-    messages.add(new ChatMessage(text: "1", user: new ChatUser(uid: "123456", name: "Tiit")));
-//    messages.add(new ChatMessage(text: "2", user: new ChatUser(uid: "123451", name: "Niki")));
-//    messages.add(new ChatMessage(text: "3", user: new ChatUser(uid: "123452", name: "ffy")));
-//    messages.add(new ChatMessage(text: "4", user: new ChatUser(uid: "123459", name: "Jass")));
-
   }
-
-
 }
