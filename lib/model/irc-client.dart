@@ -11,7 +11,11 @@ import 'config.dart';
 
 class IrcClient {
 
-  static IrcClient instance = new IrcClient();
+  static IrcClient instance;
+
+  static initialize() {
+    instance = new IrcClient();
+  }
 
   String server = "irc.quakenet.org";
   String channel = "#õlimobile";
@@ -50,7 +54,9 @@ class IrcClient {
       if (event.eventName == "privMsgRecieved") {
 
         Message message = (event as MessageRecievedEvent).message;
-        messages.add(new ChatMessage(text: message.parameters[1], user: new ChatUser(uid: "123451", name: "Niki")));
+
+        ChatUser user = new ChatUser(uid: message.prefix.user, name: message.prefix.nick);
+        messages.add(new ChatMessage(text: message.parameters[1], user: user));
         chat.update(messages);
       }
     });
