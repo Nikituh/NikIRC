@@ -7,6 +7,12 @@ import 'package:firn/events/MessageRecievedEvent.dart';
 
 import 'config.dart';
 
+enum IrcConnectionState {
+  NOT_CONNECTED,
+  CONNECTING,
+  CONNECTED
+}
+
 mixin IrcDelegate {
 
   void connected();
@@ -35,7 +41,11 @@ class IrcClient {
   FirnConfig config;
   FirnClient client;
 
+  IrcConnectionState state;
+
   IrcClient() {
+
+    state = IrcConnectionState.NOT_CONNECTED;
 
     client = new FirnClient();
     client.printDebug = true;
@@ -50,6 +60,7 @@ class IrcClient {
     client.globalEventController.stream.listen((event) async {
       this.config = event.config;
       if (event.eventName == "ready") {
+        state = IrcConnectionState.CONNECTED;
         delegate?.connected();
       }
       if (event.eventName == "authenticated") {
@@ -63,6 +74,7 @@ class IrcClient {
   }
 
   connect(String server, String nick, String name) {
+    state = IrcConnectionState.CONNECTING;
     config.server = server;
     config.nickname = nick;
     config.realname = name;

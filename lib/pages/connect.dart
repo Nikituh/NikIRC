@@ -81,10 +81,8 @@ class ConnectPageState extends State<ConnectPage> with IrcDelegate {
     );
   }
 
-  bool isLoading = false;
-  bool isConnected = false;
   createAppBarContent() {
-    if (isLoading) {
+    if (IrcClient.instance.state == IrcConnectionState.CONNECTING) {
       return new Container(width: 58.0, height: 30.0,
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: new CircularProgressIndicator(backgroundColor: Colors.blue));
@@ -93,22 +91,19 @@ class ConnectPageState extends State<ConnectPage> with IrcDelegate {
     return new Container(
         width: 20.0, height: 20.0, margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
         decoration: new BoxDecoration(
-          color: isConnected ? Colors.green : Colors.red,
+          color: IrcClient.instance.state == IrcConnectionState.CONNECTED ? Colors.green : Colors.red,
           shape: BoxShape.circle,
         ));
   }
 
   onConnectPress() {
-    isLoading = true;
     IrcClient.instance.connect(
         serverTextController.text,
         nickTextController.text,
         nameTextController.text
     );
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() {});
 
 //    Navigator.push(context, createRoute(context, ChatPage(title: IrcClient.instance.channel)));
   }
@@ -124,10 +119,7 @@ class ConnectPageState extends State<ConnectPage> with IrcDelegate {
 
   @override
   void connected() {
-    setState(() {
-      isLoading = false;
-      isConnected = true;
-    });
+    setState(() {});
   }
 
   @override
