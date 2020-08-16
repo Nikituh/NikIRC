@@ -20,7 +20,12 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+          title: Text(title),
+          actions: <Widget>[
+            new Container(width: 58.0, height: 30.0, padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+              child: new CircularProgressIndicator(backgroundColor: Colors.blue))]
+      ),
       body: Center(
         child: Container(
           color: Colors.white,
