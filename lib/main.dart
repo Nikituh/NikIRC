@@ -17,7 +17,7 @@ class NikIRC extends StatelessWidget {
     return MaterialApp(
       title: 'NikiRC',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginPage(title: 'NikIRC'),

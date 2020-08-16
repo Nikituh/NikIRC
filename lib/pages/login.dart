@@ -23,8 +23,15 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
           title: Text(title),
           actions: <Widget>[
-            new Container(width: 58.0, height: 30.0, padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-              child: new CircularProgressIndicator(backgroundColor: Colors.blue))]
+//            new Container(width: 58.0, height: 30.0, padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+            new Container(width: 20.0, height: 20.0, padding: EdgeInsets.fromLTRB(15, 15, 30, 15), margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+//              child: new CircularProgressIndicator(backgroundColor: Colors.blue)
+              decoration: new BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+
+              ),
+              )]
       ),
       body: Center(
         child: Container(
@@ -60,7 +67,7 @@ class LoginPage extends StatelessWidget {
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(5.0),
-      color: Color.fromARGB(255, 255, 50, 50),
+      color: Colors.amberAccent,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
