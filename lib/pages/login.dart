@@ -13,6 +13,10 @@ class LoginPage extends StatelessWidget {
 
   BuildContext context;
 
+  final TextEditingController serverTextController = new TextEditingController();
+  final TextEditingController nickTextController = new TextEditingController();
+  final TextEditingController nameTextController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +34,11 @@ class LoginPage extends StatelessWidget {
                   child: Image.asset("assets/logo.png", fit: BoxFit.contain),
                 ),
                 SizedBox(height: 20.0),
-                new InputField("Server"),
+                new InputField("Server", IrcClient.DEFAULT_SERVER, serverTextController),
                 SizedBox(height: 20.0),
-                new InputField("Channel"),
+                new InputField("Nickname", IrcClient.DEFAULT_NICK, nickTextController),
+                SizedBox(height: 20.0),
+                new InputField("Real name", IrcClient.DEFAULT_NAME, nameTextController),
                 SizedBox(height: 30.0),
                 createLoginButton(context),
                 SizedBox(height: 15.0),
@@ -63,7 +69,13 @@ class LoginPage extends StatelessWidget {
   }
 
   onConnectPress() {
-    Navigator.push(context, createRoute(context, ChatPage(title: IrcClient.instance.channel)));
+    IrcClient.instance.connect(
+        serverTextController.text,
+        nickTextController.text,
+        nameTextController.text
+    );
+
+//    Navigator.push(context, createRoute(context, ChatPage(title: IrcClient.instance.channel)));
   }
 
   createRoute(BuildContext context, Widget widget) {
