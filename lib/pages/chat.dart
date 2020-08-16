@@ -1,6 +1,7 @@
 
 import 'package:NikIRC/model/irc-client.dart';
 import 'package:dash_chat/dash_chat.dart';
+import 'package:firn/datatypes/Message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,12 @@ class ChatPage extends StatefulWidget {
   State<StatefulWidget> createState() => ChatPageState();
 
 }
-class ChatPageState extends State<ChatPage> {
+class ChatPageState extends State<ChatPage> with IrcDelegate {
 
   List<ChatMessage> messages = new List();
 
   ChatPageState() {
-    messages = IrcClient.instance.messages;
-    IrcClient.instance.chat = this;
+    IrcClient.instance.delegate = this;
   }
 
   @override
@@ -31,12 +31,11 @@ class ChatPageState extends State<ChatPage> {
             child: Container(
               color: Colors.white,
               child: DashChat(
-                  user: ChatUser(
-                    name: "Jhon Doe",
-                    uid: "xxxxxxxxx",
-                    avatar: "https://www.wrappixel.com/ampleadmin/assets/images/users/4.jpg",
-                  ),
-                  messages: messages,
+                user: ChatUser(uid: "asklfsdkg", name: IrcClient.instance.config.nickname),
+                messages: messages,
+                onSend: (ChatMessage message) {
+                    IrcClient.instance.send(message.text);
+                },
               ),
             )
         )
@@ -45,9 +44,22 @@ class ChatPageState extends State<ChatPage> {
 
   void update(List<ChatMessage> messages) {
     this.messages = messages;
-    setState(() {
+    setState(() { });
+  }
 
-    });
+  @override
+  void authenticated() {
+    print("authenticated");
+  }
+
+  @override
+  void connected() {
+    print("connected");
+  }
+
+  @override
+  void messageReceived(Message message) {
+    update(IrcClient.instance.messages);
   }
 
 }
