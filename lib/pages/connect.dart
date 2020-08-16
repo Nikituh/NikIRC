@@ -1,37 +1,32 @@
 
 import 'package:NikIRC/model/irc-client.dart';
 import 'package:NikIRC/model/style.dart';
-import 'package:NikIRC/pages/chat.dart';
 import 'package:NikIRC/subviews/input-field.dart';
+import 'package:firn/datatypes/Message.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class ConnectPage extends StatefulWidget {
 
-  LoginPage({Key key, this.title}) : super(key: key);
+  ConnectPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
-  BuildContext context;
+  @override
+  State<StatefulWidget> createState() => ConnectPageState();
+}
 
-  final TextEditingController serverTextController = new TextEditingController();
-  final TextEditingController nickTextController = new TextEditingController();
-  final TextEditingController nameTextController = new TextEditingController();
+class ConnectPageState extends State<ConnectPage> with IrcDelegate {
 
+  ConnectPageState() {
+    IrcClient.instance.delegate = this;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(title),
-          actions: <Widget>[
-//            new Container(width: 58.0, height: 30.0, padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-            new Container(width: 20.0, height: 20.0, padding: EdgeInsets.fromLTRB(15, 15, 30, 15), margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-//              child: new CircularProgressIndicator(backgroundColor: Colors.blue)
-              decoration: new BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-
-              ),
-              )]
+          title: Text(widget.title),
+          actions: <Widget>[ createAppBarContent() ]
       ),
       body: Center(
         child: Container(
@@ -62,6 +57,12 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  BuildContext context;
+
+  final TextEditingController serverTextController = new TextEditingController();
+  final TextEditingController nickTextController = new TextEditingController();
+  final TextEditingController nameTextController = new TextEditingController();
+
   createLoginButton(BuildContext context) {
     this.context = context;
     return Material(
@@ -80,12 +81,34 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  bool isLoading = false;
+  bool isConnected = false;
+  createAppBarContent() {
+    if (isLoading) {
+      return new Container(width: 58.0, height: 30.0,
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+          child: new CircularProgressIndicator(backgroundColor: Colors.blue));
+    }
+
+    return new Container(
+        width: 20.0, height: 20.0, margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+        decoration: new BoxDecoration(
+          color: isConnected ? Colors.green : Colors.red,
+          shape: BoxShape.circle,
+        ));
+  }
+
   onConnectPress() {
+    isLoading = true;
     IrcClient.instance.connect(
         serverTextController.text,
         nickTextController.text,
         nameTextController.text
     );
+
+    setState(() {
+      isLoading = true;
+    });
 
 //    Navigator.push(context, createRoute(context, ChatPage(title: IrcClient.instance.channel)));
   }
@@ -93,4 +116,23 @@ class LoginPage extends StatelessWidget {
   createRoute(BuildContext context, Widget widget) {
     return MaterialPageRoute(builder: (context) => widget);
   }
+
+  @override
+  void authenticated() {
+    // TODO: implement authenticated
+  }
+
+  @override
+  void connected() {
+    setState(() {
+      isLoading = false;
+      isConnected = true;
+    });
+  }
+
+  @override
+  void messageReceived(Message message) {
+    // TODO: implement messageReceived
+  }
+
 }

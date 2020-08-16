@@ -1,5 +1,5 @@
 import 'package:NikIRC/model/irc-client.dart';
-import 'package:NikIRC/pages/login.dart';
+import 'package:NikIRC/pages/connect.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class NikIRC extends StatelessWidget {
         primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(title: 'NikIRC'),
+      home: ConnectPage(title: 'NikIRC'),
     );
   }
 }
